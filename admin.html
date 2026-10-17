@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Qarzdorlar daftari — Bozorcha</title>
+<meta name="theme-color" content="#3a2fd1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ind:#3a2fd1;--sun:#ffd23f;--bg:#f5f4fb;--ink:#17142b;--mut:#6a6784;--line:#e4e2f2;--ok:#12926a;--bad:#d9443a;--h:"Sora","Trebuchet MS",system-ui,sans-serif;--b:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:400 16px/1.5 var(--b);background:var(--bg);color:var(--ink);padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
+.wrap{width:min(760px,100% - 28px);margin-inline:auto}
+header{background:var(--ind);color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 0 22px;border-radius:0 0 28px 28px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top a,.top button{color:#fff;font-size:14px;background:rgba(255,255,255,.16);border:0;padding:8px 14px;border-radius:99px;text-decoration:none;cursor:pointer}
+h1{font:800 26px var(--h);letter-spacing:-.02em;margin-top:14px}
+.sum{display:flex;gap:10px;margin-top:14px}
+.sum div{flex:1;background:rgba(255,255,255,.14);border-radius:16px;padding:12px 14px}
+.sum small{display:block;font-size:13px;color:#d5d1ff}
+.sum b{font:800 22px var(--h)}
+.in{width:100%;border:2px solid var(--line);border-radius:14px;padding:13px 14px;background:#fff;font-size:16px}
+.in:focus{border-color:var(--ind);outline:none}
+.btn{border:0;border-radius:14px;background:var(--ind);color:#fff;font-weight:700;padding:13px 18px;cursor:pointer}
+.btn.sun{background:var(--sun);color:var(--ink)}.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}
+.btn:disabled{opacity:.6}
+.login{margin-top:60px;background:#fff;border-radius:22px;padding:22px;border:1px solid var(--line)}
+.login h1{color:var(--ink);margin:0 0 6px}
+.login p{color:var(--mut);margin-bottom:14px}
+.err{color:var(--bad);font-weight:600;margin-top:10px}
+.tools{display:flex;gap:8px;margin:18px 0 10px}
+.tools .in{flex:1;min-width:0}
+details.add{background:#fff;border-radius:20px;border:1px solid var(--line);padding:0 16px;margin-bottom:14px}
+details.add summary{cursor:pointer;font:700 17px var(--h);padding:15px 0;list-style:none}
+details.add summary::-webkit-details-marker{display:none}
+details.add summary::after{content:"+";float:right;font-size:24px;color:var(--ind)}
+details.add[open] summary::after{content:"−"}
+.fg{display:grid;gap:10px;padding-bottom:16px}
+.ph{display:flex}
+.ph i{font-style:normal;font-weight:700;padding:13px 0 13px 14px;border:2px solid var(--line);border-right:0;border-radius:14px 0 0 14px;background:var(--bg)}
+.ph .in{border-radius:0 14px 14px 0}
+.list{display:grid;gap:10px;margin-top:10px}
+.d{background:#fff;border-radius:20px;border:1px solid var(--line);padding:14px 16px}
+.d.zero{opacity:.55}
+.dh{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.dn{font:700 18px var(--h);letter-spacing:-.01em;overflow-wrap:anywhere}
+.dp{display:inline-block;margin-top:2px;font-weight:600;color:var(--ind);text-decoration:none}
+.bal{font:800 20px var(--h);text-align:right;white-space:nowrap;color:var(--bad)}
+.zero .bal{color:var(--ok)}
+.note{font-size:14px;color:var(--mut);margin-top:4px}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.acts .btn{padding:10px 14px;font-size:14.5px}
+.pay{display:none;margin-top:12px;gap:8px;flex-wrap:wrap}
+.pay.on{display:flex}
+.pay .in{flex:1 1 140px;min-width:0}
+.empty{text-align:center;color:var(--mut);padding:36px 0}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--mut);margin:4px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="login" hidden>
+  <div class="login">
+    <h1 id="lh">Qarzdorlar daftari</h1>
+    <p id="lp">Faqat do‘kon egasi uchun. Parolni kiriting.</p>
+    <input class="in" id="pw" type="password" autocomplete="current-password" placeholder="Parol" aria-label="Parol">
+    <div class="err" id="le" role="alert"></div>
+    <button class="btn" id="go" type="button" style="width:100%;margin-top:12px">Kirish</button>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <header><div class="wrap">
+    <div class="top"><a href="/">← Do‘kon</a><button id="out" type="button">Chiqish</button></div>
+    <h1>Qarzdorlar daftari</h1>
+    <div class="sum"><div><small>Jami qarz</small><b id="tot">0</b></div><div><small>Qarzdorlar</small><b id="cnt">0</b></div></div>
+  </div></header>
+  <div class="wrap">
+    <div class="tools"><input class="in" id="s" type="search" placeholder="Ism yoki raqam bo‘yicha qidirish" aria-label="Qidirish"></div>
+    <details class="add" id="addbox">
+      <summary>Yangi qarzdor qo‘shish</summary>
+      <div class="fg">
+        <input class="in" id="an" placeholder="Ism" maxlength="60" aria-label="Ism">
+        <div class="ph"><i>+998</i><input class="in" id="ap" type="tel" inputmode="tel" placeholder="90 123 45 67" maxlength="13" aria-label="Telefon"></div>
+        <input class="in" id="aa" inputmode="numeric" placeholder="Qarz summasi (so‘m)" aria-label="Summa">
+        <input class="in" id="ac" placeholder="Izoh (ixtiyoriy)" maxlength="120" aria-label="Izoh">
+        <div class="err" id="ae" role="alert"></div>
+        <button class="btn" id="ab" type="button">Saqlash</button>
+      </div>
+    </details>
+    <div class="list" id="list" aria-live="polite"></div>
+    <details class="add" id="pdet" hidden style="margin-top:18px">
+      <summary>Qarzini bergan odamlar (<span id="pc">0</span>)</summary>
+      <div class="list" id="paid" style="margin-top:0;padding-bottom:14px"></div>
+    </details>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var fmt=function(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ")};
+  var som=function(n){return fmt(n)+" so‘m"};
+  var key="";try{key=localStorage.getItem("bz_admin")||""}catch(e){}
+  var data=[];
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  function api(method,payload){
+    return fetch("/api/debtors",{method:method,headers:{"Content-Type":"application/json","x-admin-key":key},body:payload?JSON.stringify(payload):undefined})
+    .then(function(r){return r.text().then(function(t){
+      var j=null;try{j=JSON.parse(t)}catch(x){}
+      if(!j){var e=new Error("Server /api/debtors ga javob bermadi (kod "+r.status+"). Fayllar Vercelga to‘g‘ri joylanmagan bo‘lishi mumkin: api papkasi va debtors.js borligini tekshiring.");e.status=r.status;throw e}
+      if(!r.ok){var e2=new Error(j.error||"Xatolik");e2.status=r.status;e2.setup=!!j.setup;throw e2}
+      return j})});
+  }
+  function num(v){return Number(String(v).replace(/\s/g,""))||0}
+  function maskNum(i){i.addEventListener("input",function(){var v=i.value.replace(/\D/g,"");i.value=v?fmt(v):""})}
+  function maskPh(i){i.addEventListener("input",function(){var d=i.value.replace(/\D/g,"").slice(0,9);i.value=d.replace(/^(\d{2})(\d{0,3})(\d{0,2})(\d{0,2}).*/,function(_,a,b,c,x){return[a,b,c,x].filter(Boolean).join(" ")})})}
+  maskNum($("aa"));maskPh($("ap"));
+  var setupMode=false;
+  function showLogin(msg,setup){setupMode=!!setup;$("app").hidden=true;$("login").hidden=false;$("le").textContent=msg||"";
+    $("lh").textContent=setup?"Birinchi marta kirish":"Qarzdorlar daftari";
+    $("lp").textContent=setup?"O‘zingizga parol o‘ylab toping (kamida 4 belgi). Uni faqat siz bilasiz, keyin shu telefonda eslab qolinadi.":"Faqat do‘kon egasi uchun. Parolni kiriting.";
+    $("pw").placeholder=setup?"Yangi parol":"Parol";$("pw").autocomplete=setup?"new-password":"current-password";$("go").textContent=setup?"Parolni saqlash":"Kirish"}
+  function load(silent){
+    api("GET").then(function(j){data=j;$("login").hidden=true;$("app").hidden=false;render()})
+    .catch(function(e){
+      if(e.setup){showLogin("",true);return}
+      if(e.status===401){key="";try{localStorage.removeItem("bz_admin")}catch(x){}showLogin(silent?"":e.message)}else showLogin(e.message)});
+  }
+  $("go").onclick=function(){
+    var v=$("pw").value;if(!v)return;
+    if(setupMode){
+      $("go").disabled=true;$("le").textContent="";
+      api("POST",{action:"setup",password:v}).then(function(){key=v;try{localStorage.setItem("bz_admin",key)}catch(e){}load()})
+      .catch(function(e){$("le").textContent=e.message}).finally(function(){$("go").disabled=false});
+      return;
+    }
+    key=v;try{localStorage.setItem("bz_admin",key)}catch(e){}$("le").textContent="";load()};
+  $("pw").addEventListener("keydown",function(e){if(e.key==="Enter")$("go").click()});
+  $("out").onclick=function(){key="";try{localStorage.removeItem("bz_admin")}catch(e){}$("pw").value="";showLogin("")};
+  $("s").addEventListener("input",render);
+
+  function phoneFmt(p){return"+"+p.slice(0,3)+" "+p.slice(3,5)+" "+p.slice(5,8)+" "+p.slice(8,10)+" "+p.slice(10)}
+  function dmy(iso){var d=new Date(iso);return isNaN(d)?"":("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+"."+d.getFullYear()}
+  function render(){
+    var q=$("s").value.trim().toLowerCase().replace(/\s/g,"");
+    var sum=0,n=0;data.forEach(function(d){if(d.balance>0){sum+=d.balance;n++}});
+    $("tot").textContent=som(sum);$("cnt").textContent=n;
+    var L=data.filter(function(d){return!q||d.name.toLowerCase().replace(/\s/g,"").indexOf(q)>-1||d.phone.indexOf(q.replace(/\D/g,"")||"~")>-1});
+    var act=L.filter(function(d){return d.balance>0}).sort(function(a,b){return b.balance-a.balance||a.name.localeCompare(b.name)});
+    var done=L.filter(function(d){return d.balance<=0}).sort(function(a,b){return String(b.paidAt||"").localeCompare(String(a.paidAt||""))});
+    fill($("list"),act,data.some(function(d){return d.balance>0})?"Hech narsa topilmadi.":"Hozircha qarzdor yo‘q.");
+    fill($("paid"),done,"");
+    $("pc").textContent=done.length;$("pdet").hidden=!data.some(function(d){return d.balance<=0});
+  }
+  function fill(box,L,msg){box.innerHTML="";if(!L.length){if(msg)box.appendChild(el("div","empty",msg));return}L.forEach(function(d){box.appendChild(card(d))})}
+  function upd(u){data=data.map(function(x){return x.id===u.id?u:x});render()}
+  function card(d){
+    var paid=d.balance<=0;
+    var c=el("article","d"+(paid?" zero":"")),h=el("div","dh"),l=el("div");
+    l.appendChild(el("div","dn",d.name));
+    var a=el("a","dp",phoneFmt(d.phone));a.href="tel:+"+d.phone;l.appendChild(a);
+    if(d.note)l.appendChild(el("div","note",d.note));
+    h.appendChild(l);h.appendChild(el("div","bal",paid?"To‘lagan ✓":som(d.balance)));c.appendChild(h);
+    if(paid&&d.paidAt)c.appendChild(el("div","note","Qarzini bergan sana: "+dmy(d.paidAt)));
+    var acts=el("div","acts"),pay=el("div","pay");
+    var pi=el("input","in");pi.inputMode="numeric";pi.placeholder="Summa (so‘m)";pi.setAttribute("aria-label","Summa");maskNum(pi);
+    if(!paid){
+      var ok=el("button","btn","Qarzini berdi ✓");ok.type="button";ok.style.background="var(--ok)";
+      ok.onclick=function(){if(confirm(d.name+" qarzini ("+som(d.balance)+") to‘liq berdi deb belgilaysizmi?")){ok.disabled=true;api("PATCH",{id:d.id,action:"paid"}).then(upd).catch(function(e){ok.disabled=false;alert(e.message)})}};
+      acts.appendChild(ok);
+    }
+    var bm=el("button","btn sun",paid?"Yangi qarz yozish":"Qisman to‘lov / qarz");bm.type="button";bm.onclick=function(){pay.classList.toggle("on");if(pay.classList.contains("on"))pi.focus()};
+    var cp=el("button","btn ghost","Raqamni nusxalash");cp.type="button";cp.onclick=function(){var t="+"+d.phone;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){cp.textContent="Nusxalandi ✓"}).catch(function(){cp.textContent=t});setTimeout(function(){cp.textContent="Raqamni nusxalash"},1600)};
+    var del=el("button","btn ghost","O‘chirish");del.type="button";del.style.color="var(--bad)";
+    del.onclick=function(){if(confirm(d.name+" ni daftardan o‘chirasizmi?"))api("DELETE",{id:d.id}).then(function(){data=data.filter(function(x){return x.id!==d.id});render()}).catch(function(e){alert(e.message)})};
+    acts.appendChild(bm);acts.appendChild(cp);acts.appendChild(del);c.appendChild(acts);
+    function go(action){var v=num(pi.value);if(!v)return;api("PATCH",{id:d.id,action:action,amount:v}).then(upd).catch(function(e){alert(e.message)})}
+    if(!paid){var b1=el("button","btn","To‘ladi −");b1.type="button";b1.onclick=function(){go("pay")};}
+    var b2=el("button","btn ghost","Qarz qo‘shdi +");b2.type="button";b2.onclick=function(){go("add")};
+    pay.appendChild(pi);if(b1)pay.appendChild(b1);pay.appendChild(b2);c.appendChild(pay);
+    return c;
+  }
+  $("ab").onclick=function(){
+    $("ae").textContent="";var b=$("ab");b.disabled=true;
+    api("POST",{name:$("an").value,phone:$("ap").value,amount:num($("aa").value),note:$("ac").value})
+    .then(function(d){data.push(d);["an","ap","aa","ac"].forEach(function(i){$(i).value=""});$("addbox").open=false;render()})
+    .catch(function(e){$("ae").textContent=e.message}).finally(function(){b.disabled=false});
+  };
+  load(true);
+})();
+</script>
+</body>
+</html>
